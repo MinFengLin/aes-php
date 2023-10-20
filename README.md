@@ -3,8 +3,8 @@
 - 對於一些不常輸入的密碼總是記不住, 因為都用Face ID登入就好, 尤其是銀行的App.
 - 若換手機或是被登出了, 儘管用一些暗語來記錄, 但不常用還是會忘記, 總是要使用忘記密碼或忘記使用者代號, 這是很煩人的. 但又不想把密碼明碼的方式貼在記事本.
 - 為了可以隨時隨地使用, 因此用網頁的方式來實現. 
+- 透過此方式, 我們僅需要記得一個密碼就好. 而且打在記事本上面也不怕是使用明碼來顯示. 因為被加密過了.
 ## How to use ##
-- 透過此方式, 我們僅需要記得一個密碼就好.
 ![Demo](https://github.com/MinFengLin/aes-php/blob/main/aes_demo1.JPG)
 ![Demo](https://github.com/MinFengLin/aes-php/blob/main/aes_demo2.JPG)
 ### 加密 ###

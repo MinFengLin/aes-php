@@ -5,7 +5,8 @@
 - 為了可以隨時隨地使用, 因此用網頁的方式來實現. 
 ## How to use ##
 - 透過此方式, 我們僅需要記得一個密碼就好.
-![Demo](https://github.com/MinFengLin/aes-php/blob/main/aes_demo.JPG)
+![Demo](https://github.com/MinFengLin/aes-php/blob/main/aes_demo1.JPG)
+![Demo](https://github.com/MinFengLin/aes-php/blob/main/aes_demo2.JPG)
 ### 加密 ###
 ```
 text1: this_is_username

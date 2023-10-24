@@ -66,7 +66,7 @@
             foreach ($encrypted_texts as $index => $encrypted_text) {
                 if (!empty($encrypted_text)) {
                     $textId = 'text-' . $index;
-                    echo '<li>結果 ' . ($index + 1) . ': ';
+                    echo '<li>';
                     echo '<span id="' . $textId . '">' . $encrypted_text . '</span>';
                     echo '<button class="btn btn-sm btn-primary ml-2" data-clipboard-target="#' . $textId . '">複製</button>';
                     echo '<span id="copy-success-' . $index . '" class="ml-2 d-none" style="background-color: transparent; border: none;">✔</span>';
@@ -106,7 +106,7 @@
             foreach ($decrypted_texts as $index => $decrypted_text) {
                 if (!empty($decrypted_text)) {
                     $textId = 'text-' . $index;
-                    echo '<li>結果 ' . ($index + 1) . ': ';
+                    echo '<li>';
                     echo '<span id="' . $textId . '">' . $decrypted_text . '</span>';
                     echo '<button class="btn btn-sm btn-secondary ml-2" data-clipboard-target="#' . $textId . '">複製</button>';
                     echo '<span id="copy-success-' . $index . '" class="ml-2 d-none" style="background-color: transparent; border: none;">✔</span>';

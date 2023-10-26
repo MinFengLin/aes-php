@@ -162,3 +162,24 @@
 </body>
 
 </html>
+<!-- Footer -->
+<!-- Copy from https://codepen.io/mdbootstrap/pen/poNxRgy -->
+<footer class="bg-primary text-center text-white">
+  <!-- Grid container -->
+  <div class="container p-4">
+
+
+
+
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    © 2023 Copyright:
+    <a class="text-white" href="https://github.com/MinFengLin">MinfengLin</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->

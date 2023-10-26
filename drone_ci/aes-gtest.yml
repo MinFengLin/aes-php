@@ -1,0 +1,54 @@
+kind: pipeline
+type: docker
+name: aes-gtest
+steps:
+- name: aes-gtest
+  image: ubuntu:latest
+  environment:
+    - TEST_URL: ${TEST_URL}
+  commands:
+    - apt update
+    - apt -y install libgtest-dev cmake g++ libcurl4-openssl-dev git
+    - cmake --version
+    - cd /usr/src/gtest
+    - mkdir build 
+    - cmake.. && make
+    - cd lib/
+    - cp -r libgtest* /usr/local/lib/
+    - cd /
+    - git clone http://10.125.6.250:3000/minfeng/aes-php
+    - cd /aes-php/gtest/
+    - sed -i 's/localhost/https:\/\/10.125.6.250:7054/g' aes_php-gtest.cpp
+    - echo "$TEST_URL" | sed -i 's/localhost/\1/g' aes_php-gtest.cpp
+    - g++ -o test aes_php-gtest.cpp -lgtest -lpthread -lcurl
+    - ./test
+- name: notify_telegram
+  image: appleboy/drone-telegram
+  settings:
+    token:
+      from_secret: telegram_token
+    to:
+      from_secret: telegram_chatid
+    message: >
+      {{#success build.status}}
+      ✔ golint check PASS #{{build.number}} of `{{repo.name}}`.
+      📝 Commit by {{commit.author}} on `{{commit.branch}}`:
+      ```
+      {{commit.message}}
+      ```
+      🔗 {{ build.link }}
+      {{else}}
+      ❌ golint check FAIL #{{build.number}} of `{{repo.name}}`.
+      📝 Commit by {{commit.author}} on `{{commit.branch}}`:
+      ```
+      {{commit.message}}
+      ```
+      🔗 {{ build.link }}
+      {{/success}}
+  when:
+    status: [ success, failure ]
+trigger:
+  branch:
+  - master
+node:
+  runner: 1

@@ -19,7 +19,8 @@ unordered_map<string, vector<string>> postData_array {
                      "this_is_password"}},
 };
 
-string url = "localhost";
+string test_server_ip   = getenv("TEST_SERVER_IP");
+string test_server_port = ":8080";
 
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, string* userp) {
     size_t totalSize = size * nmemb;
@@ -30,6 +31,8 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, string* userp) {
 TEST(AES_Test, Encrypt) {
     CURL* curl = curl_easy_init();
     ASSERT_NE(curl, nullptr);
+
+    string url = test_server_ip + test_server_port;
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
@@ -60,6 +63,8 @@ TEST(AES_Test, Decrypt) {
     CURL* curl = curl_easy_init();
     ASSERT_NE(curl, nullptr);
 
+    string url = test_server_ip + test_server_port;
+
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
     string postData;
@@ -88,6 +93,10 @@ TEST(AES_Test, Decrypt) {
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
+
+    string url = test_server_ip + test_server_port;
+    cout << "TEST_SERVER_IP: " << url << endl;
+
     return RUN_ALL_TESTS();
 }
 

@@ -1,27 +1,44 @@
 kind: pipeline
 type: docker
 name: aes-gtest
+
+volumes:
+- name: aes-php
+  temp: {}
+
 steps:
-- name: aes-gtest
+- name: git clone
   image: ubuntu:latest
-  environment:
-    - TEST_URL: ${TEST_URL}
+  volumes:
+  - name: aes-php
+    path: /aes-php
   commands:
     - apt update
-    - apt -y install libgtest-dev cmake g++ libcurl4-openssl-dev git
+    - apt -y install git
+    - cd /
+    - git clone http://10.125.6.250:3000/minfeng/aes-php aes
+    - cp -r /aes/* /aes-php/
+
+- name: aes-gtest
+  image: ubuntu:latest
+  volumes:
+  - name: aes-php
+    path: /aes-php
+  commands:
+    - TEST_SERVER_IP=$(cat /aes-php/test_server_ip.txt)
+    - export TEST_SERVER_IP
+    - apt update
+    - apt -y install libgtest-dev cmake g++ libcurl4-openssl-dev
     - cmake --version
     - cd /usr/src/gtest
     - mkdir build 
-    - cmake.. && make
+    - cmake .. && make
     - cd lib/
     - cp -r libgtest* /usr/local/lib/
-    - cd /
-    - git clone http://10.125.6.250:3000/minfeng/aes-php
     - cd /aes-php/gtest/
-    - sed -i 's/localhost/https:\/\/10.125.6.250:7054/g' aes_php-gtest.cpp
-    - echo "$TEST_URL" | sed -i 's/localhost/\1/g' aes_php-gtest.cpp
     - g++ -o test aes_php-gtest.cpp -lgtest -lpthread -lcurl
     - ./test
+
 - name: notify_telegram
   image: appleboy/drone-telegram
   settings:
@@ -47,8 +64,17 @@ steps:
       {{/success}}
   when:
     status: [ success, failure ]
-trigger:
-  branch:
-  - master
+
+services:
+  - name: php-nginx
+    image: trafex/php-nginx
+    volumes:
+      - name: aes-php
+        path: /var/www/html
+    commands:
+      - export TEST_SERVER_IP=$(hostname -i | tr ' ' '\n' | grep '192.168' | head -n 1)
+      - echo $TEST_SERVER_IP > /var/www/html/test_server_ip.txt
+      - /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+
 node:
   runner: 1

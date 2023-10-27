@@ -11,16 +11,20 @@ using namespace std;
 unordered_map<string, vector<string>> postData_array {
     {"encrypt",     {"text1=this_is_username",
                      "text2=this_is_password",
+                     "text3=thisis123",
                      "key=1234567890",
                      "encrypt=1"}},
     {"encrypt_res", {"9826b7e86505c91cbcf32c3192cf4cec3af6169d3edf9ff9d499c0b21847474d",
-                     "9b3e0b10365cd9a54d2c323e01b05ad73af6169d3edf9ff9d499c0b21847474d"}},
+                     "9b3e0b10365cd9a54d2c323e01b05ad73af6169d3edf9ff9d499c0b21847474d",
+                     "25bdbf373398f4592b989161f058dc76"}},
     {"decrypt",     {"text1=9826b7e86505c91cbcf32c3192cf4cec3af6169d3edf9ff9d499c0b21847474d",
                      "text2=9b3e0b10365cd9a54d2c323e01b05ad73af6169d3edf9ff9d499c0b21847474d",
+                     "text3=25bdbf373398f4592b989161f058dc76",
                      "key=1234567890",
                      "decrypt=1"}},
     {"decrypt_res", {"this_is_username",
-                     "this_is_password"}},
+                     "this_is_password",
+                     "thisis123"}},
 };
 
 string test_server_ip   = getenv("TEST_SERVER_IP") ? getenv("TEST_SERVER_IP") : "";

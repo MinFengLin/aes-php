@@ -16,7 +16,7 @@ steps:
     - apt update
     - apt -y install git
     - cd /
-    - git clone http://10.125.6.250:3000/minfeng/aes-php aes
+    - git clone https://github.com/MinFengLin/aes-php.git aes
     - cp -r /aes/* /aes-php/
 
 - name: aes-gtest
@@ -86,4 +86,4 @@ services:
       - netstat -tulpn | grep nginx | tr -s ' ' | cut -d ' ' -f 4 | cut -d ':' -f 2
 
 node:
-  runner: 1
+  github-runner: 1

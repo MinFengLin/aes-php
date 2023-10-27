@@ -1,6 +1,10 @@
 #include "gtest/gtest.h"
 #include <curl/curl.h>
+#include <unordered_map>
+#include <vector>
 #include <string>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -19,8 +23,30 @@ unordered_map<string, vector<string>> postData_array {
                      "this_is_password"}},
 };
 
-string test_server_ip   = getenv("TEST_SERVER_IP");
+string test_server_ip   = getenv("TEST_SERVER_IP") ? getenv("TEST_SERVER_IP") : "";
 string test_server_port = ":8080";
+
+string parser_test_server_ip_port (const string& server_ip) {
+    if (server_ip.empty()) {
+        cerr << "Test server ip is empty!" << endl;
+        return "";
+    }
+    
+    vector<string> server_ip_addresses;
+    istringstream iss(server_ip);
+    string ip;
+
+    while (iss >> ip) {
+        server_ip_addresses.push_back(ip);
+    }
+
+    if (!server_ip_addresses.empty()) {
+        return server_ip_addresses[0] + test_server_port;
+    } else {
+        cerr << "Ip address is empty!" << endl;
+        return "";
+    }
+}
 
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, string* userp) {
     size_t totalSize = size * nmemb;
@@ -32,7 +58,8 @@ TEST(AES_Test, Encrypt) {
     CURL* curl = curl_easy_init();
     ASSERT_NE(curl, nullptr);
 
-    string url = test_server_ip + test_server_port;
+    string url = parser_test_server_ip_port(test_server_ip);
+    ASSERT_FALSE(url.empty());
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
@@ -63,7 +90,8 @@ TEST(AES_Test, Decrypt) {
     CURL* curl = curl_easy_init();
     ASSERT_NE(curl, nullptr);
 
-    string url = test_server_ip + test_server_port;
+    string url = parser_test_server_ip_port(test_server_ip);
+    ASSERT_FALSE(url.empty());
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
@@ -94,12 +122,8 @@ TEST(AES_Test, Decrypt) {
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
-    string url = test_server_ip + test_server_port;
+    string url = parser_test_server_ip_port(test_server_ip);
     cout << "TEST_SERVER_IP: " << url << endl;
 
     return RUN_ALL_TESTS();
 }
-
-
-
-

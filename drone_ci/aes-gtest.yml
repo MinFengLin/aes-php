@@ -27,6 +27,7 @@ steps:
   commands:
     - TEST_SERVER_IP=$(cat /aes-php/test_server_ip.txt)
     - export TEST_SERVER_IP
+    - echo $TEST_SERVER_IP
     - apt update
     - apt -y install libgtest-dev cmake g++ libcurl4-openssl-dev
     - cmake --version
@@ -72,7 +73,7 @@ services:
       - name: aes-php
         path: /var/www/html
     commands:
-      - export TEST_SERVER_IP=$(hostname -i | tr ' ' '\n' | grep '192.168' | head -n 1)
+      - export TEST_SERVER_IP=$(hostname -i)
       - echo $TEST_SERVER_IP > /var/www/html/test_server_ip.txt
       - /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 

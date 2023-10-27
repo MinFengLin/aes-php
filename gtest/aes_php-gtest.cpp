@@ -28,7 +28,7 @@ unordered_map<string, vector<string>> postData_array {
 };
 
 string test_server_ip   = getenv("TEST_SERVER_IP") ? getenv("TEST_SERVER_IP") : "";
-string test_server_port = ":8080";
+string test_server_port = getenv("TEST_SERVER_PORT") ? getenv("TEST_SERVER_PORT") : "80";
 
 string parser_test_server_ip_port (const string& server_ip) {
     if (server_ip.empty()) {
@@ -45,7 +45,7 @@ string parser_test_server_ip_port (const string& server_ip) {
     }
 
     if (!server_ip_addresses.empty()) {
-        return server_ip_addresses[0] + test_server_port;
+        return server_ip_addresses[0] + ":" + test_server_port;
     } else {
         cerr << "Ip address is empty!" << endl;
         return "";

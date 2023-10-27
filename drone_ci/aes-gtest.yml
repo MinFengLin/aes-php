@@ -28,6 +28,9 @@ steps:
     - TEST_SERVER_IP=$(cat /aes-php/test_server_ip.txt)
     - export TEST_SERVER_IP
     - echo $TEST_SERVER_IP
+    - TEST_SERVER_PORT=$(cat /aes-php/test_server_port.txt)
+    - export TEST_SERVER_PORT
+    - echo $TEST_SERVER_PORT
     - apt update
     - apt -y install libgtest-dev cmake g++ libcurl4-openssl-dev
     - cmake --version
@@ -75,7 +78,12 @@ services:
     commands:
       - export TEST_SERVER_IP=$(hostname -i)
       - echo $TEST_SERVER_IP > /var/www/html/test_server_ip.txt
+      - echo $TEST_SERVER_IP
+      - export TEST_SERVER_PORT=$(cat /etc/nginx/conf.d/default.conf | grep -E 'listen [0-9]+' | awk '{print $2}' | sed 's/;//' | uniq)
+      - echo $TEST_SERVER_PORT > /var/www/html/test_server_port.txt
+      - echo $TEST_SERVER_PORT
       - /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+      - netstat -tulpn | grep nginx | tr -s ' ' | cut -d ' ' -f 4 | cut -d ':' -f 2
 
 node:
   runner: 1

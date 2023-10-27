@@ -83,7 +83,6 @@ services:
       - echo $TEST_SERVER_PORT > /var/www/html/test_server_port.txt
       - echo $TEST_SERVER_PORT
       - /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-      - netstat -tulpn | grep nginx | tr -s ' ' | cut -d ' ' -f 4 | cut -d ':' -f 2
 
 node:
   github-runner: 1

@@ -52,14 +52,14 @@ steps:
       from_secret: telegram_chatid
     message: >
       {{#success build.status}}
-      ✔ golint check PASS #{{build.number}} of `{{repo.name}}`.
+      ✔ gtest test PASS #{{build.number}} of `{{repo.name}}`.
       📝 Commit by {{commit.author}} on `{{commit.branch}}`:
       ```
       {{commit.message}}
       ```
       🔗 {{ build.link }}
       {{else}}
-      ❌ golint check FAIL #{{build.number}} of `{{repo.name}}`.
+      ❌ gtest test FAIL #{{build.number}} of `{{repo.name}}`.
       📝 Commit by {{commit.author}} on `{{commit.branch}}`:
       ```
       {{commit.message}}
